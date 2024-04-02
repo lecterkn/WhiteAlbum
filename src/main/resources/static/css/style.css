@@ -1,0 +1,29 @@
+.nav-item a:hover {
+    transition:all 0.7s;
+    background-color: gray;
+}
+
+.nav-item .selected:hover {
+    transition:all 0.7s;
+    background-color:rgba(30, 70, 170) ;
+}
+
+.nav-item .selected {
+    transition:all 0.7s;
+    background-color: rgba(30, 70, 170);
+}
+
+.nav-item .danger {
+    background-color: red;
+}
+
+.visible {
+    visibility: visible;
+}
+
+.invisible { 
+    visibility: collapse;
+    overflow: hidden;
+    height: 0;
+    width: 0;
+}
