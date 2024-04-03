@@ -119,6 +119,9 @@ public class WhiteAlbum {
 		
 		JsonReader reader = new JsonReader(isr);
 		configs = new Gson().fromJson(reader, Configs.class);
+		if (configs.getWebhook_url() != null && !configs.getWebhook_url().startsWith("https://discord.com/api/webhooks/")) {
+			configs.setWebhook_url(null);
+		}
 	}
 
 	public static List<RiotAccount> getAccounts() {
