@@ -40,7 +40,8 @@ public class ValorantAPI {
 
 	public void setPlayerID() {
 		String[] payloads = this.getAccess_token().split("\\.");
-		JsonObject payload = new Gson().fromJson(new String(Base64.decodeBase64URLSafe(payloads[1] + "==="), StandardCharsets.UTF_8), JsonObject.class);
+		String decoded = new String(Base64.decodeBase64URLSafe(payloads[1] + "==="), StandardCharsets.UTF_8);
+		JsonObject payload = new Gson().fromJson(decoded, JsonObject.class);
 		this.user_id = payload.get("sub").getAsString();
 		this.gamename = "ValoTools";
 

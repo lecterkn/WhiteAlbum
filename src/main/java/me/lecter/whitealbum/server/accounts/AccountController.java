@@ -49,12 +49,24 @@ public class AccountController {
 
 		for (SavedAccount account : AccountManager.getSavedAccount()) {
 			if (account.getUsername().equals(body.getUsername())) {
-				ValorantAPI api = ValorantAPI.create(account.getAccess_token(), account.getEntitlements_token());
-				map.put("username", api.getStoreFront().getUsername());
-				map.put("singleItemOffers", api.getStoreFront().getSingleItemOffers());
-				map.put("nightmarket", api.getStoreFront().getNightmarket());
-
-				return new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
+				RiotClient client = RiotClient.create(account.getUsername(), account.getPassword());
+				try {
+					if (client.login()) {
+						ValorantAPI api = ValorantAPI.create(client.getAccess_token(), client.getEntitlements_token());
+						
+						map.put("username", api.getStoreFront().getUsername());
+						map.put("singleItemOffers", api.getStoreFront().getSingleItemOffers());
+						map.put("nightmarket", api.getStoreFront().getNightmarket());
+						return new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
+					} else {
+						map.put("message", "failed to login");
+						return new ResponseEntity<Map<String, Object>>(map, HttpStatus.UNAUTHORIZED);
+					}
+				} catch (RiotException e) {
+					e.printStackTrace();
+					map.put("message", e.getMessage());
+					return new ResponseEntity<Map<String, Object>>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+				}
 			}
 		}
 

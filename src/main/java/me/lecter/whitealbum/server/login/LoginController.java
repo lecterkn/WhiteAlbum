@@ -41,7 +41,7 @@ public class LoginController {
 		}
 		
 		if (account.isRemember()) {
-			AccountManager.save(client.getUsername(), client.getAccess_token(), client.getEntitlements_token());
+			AccountManager.save(client.getUsername(), client.getPassword());
 		}
 		
 		ValorantAPI api = ValorantAPI.create(client.getAccess_token(), client.getEntitlements_token());

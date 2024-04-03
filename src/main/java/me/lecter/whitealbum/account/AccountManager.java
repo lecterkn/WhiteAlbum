@@ -59,8 +59,8 @@ public class AccountManager {
 		return true;
 	}
 
-	public static boolean save(String username, String access_token, String entitleentitlements_token) {
-		return save(SavedAccount.create(username, access_token, entitleentitlements_token));
+	public static boolean save(String username, String password) {
+		return save(SavedAccount.create(username, password));
 	}
 
 	public static boolean save(SavedAccount account) {
@@ -71,16 +71,15 @@ public class AccountManager {
 	public static void add(SavedAccount account) {
 		for (SavedAccount acc : savedAccount) {
 			if (acc.getUsername().equals(account.getUsername())) {
-				acc.setAccess_token(account.getAccess_token());
-				acc.setEntitlements_token(account.getEntitlements_token());
+				acc.setPassword(account.getPassword());
 				return;
 			}
 		}
 		savedAccount.add(account);
 	}
 
-	public static void add(String username, String access_token, String entitleentitlements_token) {
-		add(SavedAccount.create(username, access_token, entitleentitlements_token));
+	public static void add(String username, String password) {
+		add(SavedAccount.create(username, password));
 	}
 
 	public static List<SavedAccount> getSavedAccount() {
