@@ -55,7 +55,13 @@ public class WhiteAlbum {
 		BrowserUtils.open("http://localhost:8100/login");
 		
 		if (configs.isSkinlevels_preload()) {
-			StoreFront.setSkinLevels();
+			System.out.println("skinlevels preloading...");
+			if (StoreFront.setSkinLevels()) {
+				System.out.println("loaded skinlevels.");
+			}
+			else {
+				System.out.println("failed to load skinlevels");
+			}
 		}
 		
 		if (configs.isAutocheck_accounts()) {
