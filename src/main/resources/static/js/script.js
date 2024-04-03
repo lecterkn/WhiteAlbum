@@ -5,9 +5,20 @@ let varification_code = "3b4gBY4C75sx8DD9lvZL0mM1wLGnysYHFERx9136YnURDBbXwb";
 function setStore(data) {
     $("#itemAccountId").text(data["username"]);
     $("#offersList").empty();
-    data["singleItemOffers"].forEach((offerItem) => {
-        $("#offersList").append(getDivOffer(offerItem["displayName"], offerItem["displayIcon"], offerItem["cost"]))
-    });
+    if (data["singleItemOffers"].length > 0) {
+        data["singleItemOffers"].forEach((offerItem) => {
+            $("#offersList").append(getDivOffer(offerItem["displayName"], offerItem["displayIcon"], offerItem["cost"]))
+        });
+    } else {
+        console.log("singleItemOffers is empty");
+    }
+    if (data["nightmarket"].length > 0) {
+        data["nightmarket"].forEach((offer) => {
+            $("nightmarketList").append(getDivNightmarket(offer["displayName"], offer["displayIcon"], offerItem["cost"], offer["finalCost"], offer["discountPercent"]))
+        });
+    } else {
+        console.log("nightmarket is empty");
+    }
     $("#itemCards").removeClass("invisible");
     $("#itemCards").addClass("visible");
     setVisible("home");
@@ -106,7 +117,7 @@ function loadAccounts() {
                 txtLogin(user);
             });
         });
-        $("#accountsText").emtpy()
+        $("#accountsText").empty()
         if (count == 0) {
             $("#accountsText").append(`accounts: <span class="text-danger">${count}</span>`)
         } else {
@@ -222,10 +233,21 @@ function getDivAccount(name, isSaved, id) {
 
 function getDivOffer(name, img, cost) {
     div = 
-    `<div class="col my-3">
-        <h5 class="fs-3" id="itemName1">${name}</h5>
-        <img src="${img}" style="width: 300px;" id="itemImage1">
-        <p class="card-text text-info" id="itemCost1">${cost} <span class="text-white">VP</span></p>
+    `<div class="col my-3" style="height: 250px;">
+        <h5 class="fs-3">${name}</h5>
+        <img src="${img}" style="width: 300px;">
+        <p class="text-info fs-5 my-0">${cost} <span class="text-white">VP</span></p>
+    </div>`
+    return div;
+}
+
+function getDivNightmarket(name, img, originalCost, finalCost, discountPercent) {
+    div = 
+    `<div class="col my-3" style="height: 250px;">
+        <h5 class="fs-3">${name}</h5>
+        <img src="${img}" style="width: 300px;">
+        <p class="text-danger fs-5 my-0"><span class="fs-6 text-decoration-line-through">${originalCost}</span> -${discountPercent}%</p>
+        <p class="text-info fs-5 my-0">${finalCost} <span class="text-white">VP</span></p>
     </div>`
     return div;
 }
