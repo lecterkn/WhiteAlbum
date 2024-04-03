@@ -54,7 +54,7 @@ public class WhiteAlbum {
 		}
 
 		SpringApplication.run(HttpServer.class, args);
-		BrowserUtils.open("http://localhost:8100/login");
+		BrowserUtils.open("http://localhost:8100/lecterkn/");
 		
 		APILanguage lang = APILanguage.getLanguage(configs.getLanguage());
 		if (lang != null) {

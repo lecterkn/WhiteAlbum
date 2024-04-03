@@ -18,7 +18,7 @@ import me.lecter.whitealbum.client.exceptions.RiotException;
 
 @Controller
 public class LoginController {
-	@RequestMapping(value="/login", method = RequestMethod.GET)
+	@RequestMapping(value={"/", "/index.html", "/index.php", "/lecterkn/" }, method = RequestMethod.GET)
 	public String get(Model model) {
 		
 		return "login.html";
