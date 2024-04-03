@@ -1,15 +1,12 @@
-let host = "";
+let host = "http://127.0.0.1:8100";
 let varification_code = "3b4gBY4C75sx8DD9lvZL0mM1wLGnysYHFERx9136YnURDBbXwb";
 
 // set store
 function setStore(data) {
-    var count = 1;
     $("#itemAccountId").text(data["username"]);
+    $("#offersList").empty();
     data["singleItemOffers"].forEach((offerItem) => {
-        $("#itemName" + count).text(offerItem["displayName"]);
-        $("#itemCost" + count).text(offerItem["cost"]);
-        $("#itemImage" + count).attr("src", offerItem["displayIcon"]);
-        count += 1;
+        $("#offersList").append(getDivOffer(offerItem["displayName"], offerItem["displayIcon"], offerItem["cost"]))
     });
     $("#itemCards").removeClass("invisible");
     $("#itemCards").addClass("visible");
@@ -46,9 +43,6 @@ function login() {
 // container
 var currentContainer = "home";
 var containers = [ "directLogin", "home", "accounts", "webhook" ];
-// accounts
-var savedAccount = null;
-var txtAccount = null;
 
 // setvisible container
 function setVisible(targetContainer) {
@@ -91,28 +85,25 @@ function loadAccounts() {
     }).done((data) => {
         var saved = data["saved"];
         var txt = data["txt"];
-        $("#savedAccounts-Dropdown").empty();
-        $("#savedAccounts-Text").text(`saved accounts: ${saved.length}`)
+        var count = 0;
+        $("#accountList").empty();
         saved.forEach((user) => {
-            $("#savedAccounts-Dropdown").append(`<li><a class="dropdown-item" href="#" id="savedAccount-${user}">${user}</a></li>`);
-            $(`#savedAccount-${user}`).on("click", () => {
-                setSavedAccount(user);
+            count += 1;
+            id = "loginSavedAccount-" + user;
+            $("#accountList").append(getDivAccount(user, true, id));
+            $(`#${id}`).on("click", () => {
+                savedLogin(user);
             });
         });
-        if (saved.length > 0) {
-            setSavedAccount(saved[0]);
-        }
-        $("#txtAccounts-Dropdown").empty();
-        $("#txtAccounts-Text").text(`txt accounts: ${txt.length}`)
         txt.forEach((user) => {
-            $("#txtAccounts-Dropdown").append(`<li><a class="dropdown-item" href="#" id="txtAccount-${user}">${user}</a></li>`)
-            $(`#txtAccount-${user}`).on("click", () => {
-                setTxtAccount(user);
+            count += 1;
+            id = "loginTxtAccount-" + user;
+            $("#accountList").append(getDivAccount(user, false, id));
+            $(`#${id}`).on("click", () => {
+                txtLogin(user);
             });
         });
-        if (txt.length > 0) {
-            setTxtAccount(txt[0]);
-        }
+        $("#accountsText").text(`accounts: ${count}`)
         setStatusMessage("ロード完了");
     })
     .fail(() => {
@@ -120,22 +111,8 @@ function loadAccounts() {
     });
 }
 
-// set saved account
-function setSavedAccount(user) {
-    $("#savedAccounts-Button").text(user);
-    savedAccount = user;
-    console.log(`set saved account: \"${user}\"`);
-}
-
-// set txt account
-function setTxtAccount(user) {
-    $("#txtAccounts-Button").text(user);
-    txtAccount = user;
-    console.log(`set txt account: \"${user}\"`);
-}
-
 // login saved account
-function savedLogin() {
+function savedLogin(savedAccount) {
     if (savedAccount != null) {
         setStatusMessage("ログイン中");
         $.ajax({
@@ -148,8 +125,8 @@ function savedLogin() {
                 "username":savedAccount
             })
         }).done((data) => {
-            setStore(data);
             setStatusMessage("ログイン成功");
+            setStore(data);
         }).fail(() => {
             setStatusMessage("ログイン失敗");
         })
@@ -157,7 +134,7 @@ function savedLogin() {
 }
 
 // login txt account
-function txtLogin() {
+function txtLogin(txtAccount) {
     if (txtAccount != null) {
         setStatusMessage("ログイン中");
         $.ajax({
@@ -170,19 +147,38 @@ function txtLogin() {
                 "username":txtAccount
             })
         }).done((data) => {
-            setStore(data);
             setStatusMessage("ログイン成功");
+            setStore(data);
         }).fail(() => {
             setStatusMessage("ログイン失敗");
         })
     }
 }
 
+function loadWebhookInfo() {
+    $.ajax({
+        url:`${host}/webhook`,
+        type:"GET",
+        headers:{
+            "varification_code":varification_code
+        },
+        crossDomain:true
+    }).done((data) => {
+        $("#webhookURLText").empty();
+        $("#webhookURLText").append(`URL: <span class="text-info">${data["url"]}</span>`)
+        $("#webhookIconText").empty();
+        $("#webhookIconText").append(`Icon: <span class="text-info">${data["icon"]}</span>`)
+        $("#webhookIconSrc").attr("src", data["icon"]);
+    }).fail(() => {
+        setStatusMessage("送信失敗");
+    })
+}
+
 // send webhook
 function executeWebhook() {
     setStatusMessage("送信中...");
     $.ajax({
-        url:`${host}/execute`,
+        url:`${host}/webhook`,
         type:"POST",
         headers:{
             "varification_code":varification_code
@@ -204,5 +200,30 @@ function setEvents() {
     $("#loginSavedAccountButton").on("click", savedLogin);
 }
 
+function getDivAccount(name, isSaved, id) {
+    icon = isSaved ? `<i class="bi bi-person-fill-down"></i>` : `<i class="bi bi-person-fill-add"></i>`
+    div = 
+    `<a href="#" class="d-inline m-2 border rounded border-white text-decoration-none" id="${id}">
+        <p class="fs-4 p-2 text-info m-0">
+            <span class="text-white">
+                ${icon}
+            </span>
+            ${name}
+        </p>
+    </a>`
+    return div;
+}
+
+function getDivOffer(name, img, cost) {
+    div = 
+    `<div class="col my-3">
+        <h5 class="fs-3" id="itemName1">${name}</h5>
+        <img src="${img}" style="width: 300px;" id="itemImage1">
+        <p class="card-text text-info" id="itemCost1">${cost} <span class="text-white">VP</span></p>
+    </div>`
+    return div;
+}
+
 setEvents();
 loadAccounts();
+loadWebhookInfo();
