@@ -71,13 +71,16 @@ containers.forEach((container) => {
 });
 
 // set message to current container
-function setStatusMessage(message) {
-    $("#" + currentContainer + "-statusMessage").text(message);
+function setStatusMessage(container, message) {
+    if (!containers.includes(container)) {
+        return;
+    }
+    $("#" + container + "-statusMessage").text(message);
 }
 
 // load accounts
 function loadAccounts() {
-    setStatusMessage("ロード中...");
+    setStatusMessage("accounts", "ロード中...");
     $.ajax({
         url:`${host}/accounts`,
         type:"GET",
@@ -103,18 +106,23 @@ function loadAccounts() {
                 txtLogin(user);
             });
         });
-        $("#accountsText").text(`accounts: ${count}`)
-        setStatusMessage("ロード完了");
+        $("#accountsText").emtpy()
+        if (count == 0) {
+            $("#accountsText").append(`accounts: <span class="text-danger">${count}</span>`)
+        } else {
+            $("#accountsText").append(`accounts: <span class="text-info">${count}</span>`)
+        }
+        setStatusMessage("accounts", "ロード完了");
     })
     .fail(() => {
-       setStatusMessage("ロード失敗");
+       setStatusMessage("accounts", "ロード失敗");
     });
 }
 
 // login saved account
 function savedLogin(savedAccount) {
     if (savedAccount != null) {
-        setStatusMessage("ログイン中");
+        setStatusMessage("accounts", "ログイン中");
         $.ajax({
             url:`${host}/saved/login`,
             type:"POST",
@@ -125,10 +133,10 @@ function savedLogin(savedAccount) {
                 "username":savedAccount
             })
         }).done((data) => {
-            setStatusMessage("ログイン成功");
+            setStatusMessage("accounts", "ログイン成功");
             setStore(data);
         }).fail(() => {
-            setStatusMessage("ログイン失敗");
+            setStatusMessage("accounts", "ログイン失敗");
         })
     }
 }
@@ -136,7 +144,7 @@ function savedLogin(savedAccount) {
 // login txt account
 function txtLogin(txtAccount) {
     if (txtAccount != null) {
-        setStatusMessage("ログイン中");
+        setStatusMessage("accounts", "ログイン中");
         $.ajax({
             url:`${host}/txt/login`,
             type:"POST",
@@ -147,10 +155,10 @@ function txtLogin(txtAccount) {
                 "username":txtAccount
             })
         }).done((data) => {
-            setStatusMessage("ログイン成功");
+            setStatusMessage("accounts", "ログイン成功");
             setStore(data);
         }).fail(() => {
-            setStatusMessage("ログイン失敗");
+            setStatusMessage("accounts", "ログイン失敗");
         })
     }
 }
@@ -169,14 +177,12 @@ function loadWebhookInfo() {
         $("#webhookIconText").empty();
         $("#webhookIconText").append(`Icon: <span class="text-info">${data["icon"]}</span>`)
         $("#webhookIconSrc").attr("src", data["icon"]);
-    }).fail(() => {
-        setStatusMessage("送信失敗");
     })
 }
 
 // send webhook
 function executeWebhook() {
-    setStatusMessage("送信中...");
+    setStatusMessage("webhook", "送信中...");
     $.ajax({
         url:`${host}/webhook`,
         type:"POST",
@@ -185,9 +191,9 @@ function executeWebhook() {
         },
         crossDomain:true
     }).done((data)=>{
-        setStatusMessage("送信完了");
+        setStatusMessage("webhook", "送信完了");
     }).fail(() => {
-        setStatusMessage("送信失敗");
+        setStatusMessage("webhook", "送信失敗");
     })
 }
 
