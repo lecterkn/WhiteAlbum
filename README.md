@@ -17,7 +17,7 @@ java -jar WhiteAlbum-0.0.1-SNAPSHOT.jar
 http://localhost:8100/login
 ```
    
-## CloudFlare Bypass
+## CloudFlare 1020 Bypass
 just use this🧑‍🦯
 
 ```java
