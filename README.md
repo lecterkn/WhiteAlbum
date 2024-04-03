@@ -11,10 +11,10 @@
 java -jar WhiteAlbum-0.0.1-SNAPSHOT.jar
 ```
 
-2. connect to [http://localhost:8100/login](http://localhost:8100/login)
+2. connect to [http://localhost:8100](http://localhost:8100)
 
 ```
-http://localhost:8100/login
+http://localhost:8100
 ```
    
 ## CloudFlare 1020 Bypass
