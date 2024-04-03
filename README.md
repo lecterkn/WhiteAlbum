@@ -18,7 +18,7 @@ http://localhost:8100/login
 ```
    
 ## CloudFlare Bypass
-just use this 🧑‍🦯
+just use this🧑‍🦯
 
 ```java
 private static SSLConnectionSocketFactory getSSLSocketFactory() throws NoSuchAlgorithmException {
