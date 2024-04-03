@@ -7,6 +7,8 @@ public class Configs {
 	private String varification_code;
 	private boolean autocheck_accounts;
 	private boolean skinlevels_preload;
+	private String region;
+	private String language;
 
 	public String getWebhook_url() {
 		return this.webhook_url;
@@ -46,5 +48,21 @@ public class Configs {
 
 	public void setSkinlevels_preload(boolean skinlevels_preload) {
 		this.skinlevels_preload = skinlevels_preload;
+	}
+
+	public String getRegion() {
+		return region;
+	}
+
+	public void setRegion(String region) {
+		this.region = region;
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 }

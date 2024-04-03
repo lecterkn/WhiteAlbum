@@ -27,16 +27,14 @@ public class ValorantAPI {
 	private String entitlements_token;
 	private String user_id;
 	private String gamename;
-	private static Region region;
-	private static APILanguage language;
+	private static Region region = Region.AP;
+	private static APILanguage language = APILanguage.EN;
 	public static final String TOKEN_TYPE = "Bearer";
 	public static final String ENCODING = "UTF-8";
 
-	private ValorantAPI(String access_token, String entitlements_token, Region theRegion, APILanguage theLanguage) {
+	private ValorantAPI(String access_token, String entitlements_token) {
 		this.access_token = access_token;
 		this.entitlements_token = entitlements_token;
-		region = theRegion;
-		language = theLanguage;
 		this.setPlayerID();
 	}
 
@@ -93,12 +91,8 @@ public class ValorantAPI {
 		request.addHeader("Content-Type", "application/json");
 	}
 
-	public static ValorantAPI create(String access_token, String entitlements_token, Region theRegion, APILanguage theLanguage) {
-		return new ValorantAPI(access_token, entitlements_token, theRegion, theLanguage);
-	}
-
 	public static ValorantAPI create(String access_token, String entitlements_token) {
-		return create(access_token, entitlements_token, Region.AP, APILanguage.JP);
+		return new ValorantAPI(access_token, entitlements_token);
 	}
 
 	public String getAccess_token() {

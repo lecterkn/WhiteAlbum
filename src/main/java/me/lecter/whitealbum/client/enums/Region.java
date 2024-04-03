@@ -17,4 +17,13 @@ public enum Region {
 	public String getParam() {
 		return this.region;
 	}
+	
+	public static Region getRegion(String region) {
+		for (Region reg : Region.values()) {
+			if (reg.getParam().equalsIgnoreCase(region)) {
+				return reg;
+			}
+		}
+		return null;
+	}
 }

@@ -17,6 +17,8 @@ import me.lecter.whitealbum.account.AccountManager;
 import me.lecter.whitealbum.account.RiotAccount;
 import me.lecter.whitealbum.client.RiotClient;
 import me.lecter.whitealbum.client.ValorantAPI;
+import me.lecter.whitealbum.client.enums.APILanguage;
+import me.lecter.whitealbum.client.enums.Region;
 import me.lecter.whitealbum.client.exceptions.RiotException;
 import me.lecter.whitealbum.client.valorant.ItemOffer;
 import me.lecter.whitealbum.client.valorant.StoreFront;
@@ -53,6 +55,18 @@ public class WhiteAlbum {
 
 		SpringApplication.run(HttpServer.class, args);
 		BrowserUtils.open("http://localhost:8100/login");
+		
+		APILanguage lang = APILanguage.getLanguage(configs.getLanguage());
+		if (lang != null) {
+			ValorantAPI.setLanguage(lang);
+			System.out.println("APILanguage set to \"" + lang.getParam() + "\"");
+		}
+		
+		Region region = Region.getRegion(configs.getRegion());
+		if (region != null) {
+			ValorantAPI.setRegion(region);
+			System.out.println("Region set to \"" + region.getParam() + "\"");
+		}
 		
 		if (configs.isSkinlevels_preload()) {
 			System.out.println("skinlevels preloading...");

@@ -29,4 +29,13 @@ public enum APILanguage {
 	public String getParam() {
 		return this.language;
 	}
+	
+	public static APILanguage getLanguage(String language) {
+		for (APILanguage lang : APILanguage.values()) {
+			if (lang.getParam().equalsIgnoreCase(language)) {
+				return lang;
+			}
+		}
+		return null;
+	}
 }
