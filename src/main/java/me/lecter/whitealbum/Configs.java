@@ -6,6 +6,7 @@ public class Configs {
 	private String avatar_url;
 	private String varification_code;
 	private boolean autocheck_accounts;
+	private boolean skinlevels_preload;
 
 	public String getWebhook_url() {
 		return this.webhook_url;
@@ -37,5 +38,13 @@ public class Configs {
 
 	public void setVarification_code(String varification_code) {
 		this.varification_code = varification_code;
+	}
+
+	public boolean isSkinlevels_preload() {
+		return skinlevels_preload;
+	}
+
+	public void setSkinlevels_preload(boolean skinlevels_preload) {
+		this.skinlevels_preload = skinlevels_preload;
 	}
 }

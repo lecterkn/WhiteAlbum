@@ -81,7 +81,7 @@ public class StoreFront {
 		return null;
 	}
 	
-	private static void setSkinLevels() {
+	public static boolean setSkinLevels() {
 		try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
 			HttpGet httpGet = new HttpGet("https://valorant-api.com/v1/weapons/skinlevels/?language=" + ValorantAPI.getLanguage().getParam());
 			try (CloseableHttpResponse httpResponse = httpClient.execute(httpGet)) {
@@ -89,11 +89,13 @@ public class StoreFront {
 					String responseBody = EntityUtils.toString(httpResponse.getEntity());
 					JsonElement responseJson = new Gson().fromJson(responseBody, JsonObject.class).get("data");
 					skinLevels = new Gson().fromJson(responseJson, SKINLEVELS_TYPE);
+					return true;
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return false;
 	}
 
 	public static StoreFront create(String username, String json) {

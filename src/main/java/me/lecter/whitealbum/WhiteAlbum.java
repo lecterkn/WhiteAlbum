@@ -53,7 +53,11 @@ public class WhiteAlbum {
 
 		SpringApplication.run(HttpServer.class, args);
 		BrowserUtils.open("http://localhost:8100/login");
-
+		
+		if (configs.isSkinlevels_preload()) {
+			StoreFront.setSkinLevels();
+		}
+		
 		if (configs.isAutocheck_accounts()) {
 			for (RiotAccount account : accounts) {
 				RiotClient client = RiotClient.create(account.getUsername(), account.getPassword());
@@ -75,6 +79,7 @@ public class WhiteAlbum {
 				}
 			}
 		}
+
 
 	}
 
