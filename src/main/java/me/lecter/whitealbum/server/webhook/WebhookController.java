@@ -1,4 +1,4 @@
-package me.lecter.whitealbum.server.execute;
+package me.lecter.whitealbum.server.webhook;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,9 +23,9 @@ import me.lecter.whitealbum.webhook.Embed;
 import me.lecter.whitealbum.webhook.Webhook;
 
 @RestController
-public class ExecuteController {
+public class WebhookController {
 
-	@RequestMapping(value="/execute", method=RequestMethod.GET)
+	@RequestMapping(value="/webhook", method=RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> get(@RequestHeader("varification_code") String varification_code) {
 		Map<String, Object> map = new HashMap<String, Object>();
 
@@ -34,14 +34,20 @@ public class ExecuteController {
 			return new ResponseEntity<Map<String, Object>>(map, HttpStatus.UNAUTHORIZED);
 		}
 
-		map.put("data", this.getStoreFronts());
+		map.put("url", WhiteAlbum.getConfigs().getWebhook_url());
+		map.put("icon", WhiteAlbum.getConfigs().getAvatar_url());
 		return new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
 	}
 
-	@RequestMapping(value="/execute", method=RequestMethod.POST)
+	@RequestMapping(value="/webhook", method=RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> execute(@RequestHeader("varification_code") String varification_code) {
 		Map<String, Object> map = new HashMap<String, Object>();
-
+		
+		if (WhiteAlbum.getConfigs().getWebhook_url() == null || WhiteAlbum.getConfigs().getWebhook_url().isEmpty()) {
+			map.put("message", "webhook url error");
+			return new ResponseEntity<Map<String, Object>>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 		if (!varification_code.equals(WhiteAlbum.getConfigs().getVarification_code())) {
 			map.put("message", "unauthorized");
 			return new ResponseEntity<Map<String, Object>>(map, HttpStatus.UNAUTHORIZED);
