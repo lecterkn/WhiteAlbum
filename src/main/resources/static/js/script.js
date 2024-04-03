@@ -133,7 +133,7 @@ function loadAccounts() {
 // login saved account
 function savedLogin(savedAccount) {
     if (savedAccount != null) {
-        setStatusMessage("accounts", "ログイン中");
+        setStatusMessage("accounts", "ログイン中...");
         $.ajax({
             url:`${host}/saved/login`,
             type:"POST",
@@ -155,7 +155,7 @@ function savedLogin(savedAccount) {
 // login txt account
 function txtLogin(txtAccount) {
     if (txtAccount != null) {
-        setStatusMessage("accounts", "ログイン中");
+        setStatusMessage("accounts", "ログイン中...");
         $.ajax({
             url:`${host}/txt/login`,
             type:"POST",
@@ -233,24 +233,38 @@ function getDivAccount(name, isSaved, id) {
 
 function getDivOffer(name, img, cost) {
     div = 
-    `<div class="col my-3" style="height: 250px;">
-        <h5 class="fs-3">${name}</h5>
-        <img src="${img}" style="width: 300px;">
-        <p class="text-info fs-5 my-0">${cost} <span class="text-white">VP</span></p>
+    `<div class="my-3 d-inline" style="height: 250px;width:400px">
+        <div class="position-relative" style="height:100%;">
+            <h5 class="position-absolute top-0 start-0 fs-3 text-white">${name}</h5>
+            <img class="position-absolute top-50 start-0 translate-middle-y" src="${img}" style="width: 300px;">
+            <p class="position-absolute bottom-0 start-0 text-info fs-5 my-0">${cost} <span class="text-white">VP</span></p>
+        </div>
     </div>`
     return div;
 }
 
 function getDivNightmarket(name, img, originalCost, finalCost, discountPercent) {
     div = 
-    `<div class="col my-3" style="height: 250px;">
-        <h5 class="fs-3">${name}</h5>
-        <img src="${img}" style="width: 300px;">
-        <p class="text-danger fs-5 my-0"><span class="fs-6 text-decoration-line-through">${originalCost}</span> -${discountPercent}%</p>
-        <p class="text-info fs-5 my-0">${finalCost} <span class="text-white">VP</span></p>
+    `<div class="my-3 d-inline" style="height: 250px;width:400px">
+        <div class="position-relative" style="height:100%;">
+            <h5 class="position-absolute top-0 start-0 fs-3 text-white">${name}</h5>
+            <img class="position-absolute top-50 start-0 translate-middle-y" src="${img}" style="width: 300px;">
+            <p class="position-absolute bottom-0 start-0 text-danger fs-5 my-0"><span class="fs-6 text-decoration-line-through">${originalCost}</span> -${discountPercent}%<br>
+            <span class="text-info fs-5 my-0">${finalCost} <span class="text-white">VP</span></span>
+            </p>
+        </div>
     </div>`
     return div;
 }
+
+/*
+$("#nightmarketList").append(getDivNightmarket("Trash", "https://media.valorant-api.com/weaponskinlevels/11c1c7fb-4fe7-1f6f-e4c4-47a9f46f7ea2/displayicon.png", 3550, 2550, 25))
+$("#nightmarketList").append(getDivNightmarket("Trash", "https://media.valorant-api.com/weaponskinlevels/11c1c7fb-4fe7-1f6f-e4c4-47a9f46f7ea2/displayicon.png", 3550, 2550, 25))
+$("#nightmarketList").append(getDivNightmarket("Trash", "https://media.valorant-api.com/weaponskinlevels/11c1c7fb-4fe7-1f6f-e4c4-47a9f46f7ea2/displayicon.png", 3550, 2550, 25))
+$("#nightmarketList").append(getDivNightmarket("Trash", "https://media.valorant-api.com/weaponskinlevels/11c1c7fb-4fe7-1f6f-e4c4-47a9f46f7ea2/displayicon.png", 3550, 2550, 25))
+$("#nightmarketList").append(getDivNightmarket("Trash", "https://media.valorant-api.com/weaponskinlevels/11c1c7fb-4fe7-1f6f-e4c4-47a9f46f7ea2/displayicon.png", 3550, 2550, 25))
+$("#nightmarketList").append(getDivNightmarket("Trash", "https://media.valorant-api.com/weaponskinlevels/11c1c7fb-4fe7-1f6f-e4c4-47a9f46f7ea2/displayicon.png", 3550, 2550, 25))
+*/
 
 setEvents();
 loadAccounts();
