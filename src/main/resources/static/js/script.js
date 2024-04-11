@@ -5,6 +5,7 @@ let varification_code = "3b4gBY4C75sx8DD9lvZL0mM1wLGnysYHFERx9136YnURDBbXwb";
 function setStore(data) {
     $("#itemAccountId").text(data["username"]);
     $("#offersList").empty();
+    $("#nightmarketList").empty();
     if (data["singleItemOffers"].length > 0) {
         data["singleItemOffers"].forEach((offerItem) => {
             $("#offersList").append(getDivOffer(offerItem["displayName"], offerItem["displayIcon"], offerItem["cost"]))
