@@ -56,7 +56,6 @@ public class StoreFront {
 			// loading NightMarket
 			if (storefrontJson.has("BonusStore")) {
 				for (JsonElement element : storefrontJson.getAsJsonObject("BonusStore").getAsJsonArray("BonusStoreOffers").asList()) {
-					System.out.println(element.toString());
 					JsonObject jsonObject = element.getAsJsonObject();
 					String offerId = jsonObject.getAsJsonObject("Offer").get("OfferID").getAsString();
 					
