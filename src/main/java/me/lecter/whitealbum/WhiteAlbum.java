@@ -33,7 +33,7 @@ public class WhiteAlbum {
 	private static List<RiotAccount> accounts;
 	public static final String NAME = "WhiteAlbum";
 	public static final String VERSION = "1.0.2";
-	public static final String[] DEVELOPERS = {"x/twitter@iameugeosword", "github@lecterkn"};
+	public static final String[] DEVELOPERS = {"x/twitter@lecterkn", "github@lecterkn"};
 
 	public static void main(String[] args) {
 		System.out.println("=== INFOMATION ===");
