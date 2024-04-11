@@ -56,8 +56,9 @@ public class StoreFront {
 			// loading NightMarket
 			if (storefrontJson.has("BonusStore")) {
 				for (JsonElement element : storefrontJson.getAsJsonObject("BonusStore").getAsJsonArray("BonusStoreOffers").asList()) {
+					System.out.println(element.toString());
 					JsonObject jsonObject = element.getAsJsonObject();
-					String offerId = jsonObject.getAsJsonObject("Offer").get("OfferId").getAsString();
+					String offerId = jsonObject.getAsJsonObject("Offer").get("OfferID").getAsString();
 					
 					SkinLevel skinLevel = getSkinLevel(offerId);
 					if (skinLevel != null) {

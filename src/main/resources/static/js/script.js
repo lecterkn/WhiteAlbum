@@ -14,7 +14,7 @@ function setStore(data) {
     }
     if (data["nightmarket"].length > 0) {
         data["nightmarket"].forEach((offer) => {
-            $("nightmarketList").append(getDivNightmarket(offer["displayName"], offer["displayIcon"], offerItem["cost"], offer["finalCost"], offer["discountPercent"]))
+            $("#nightmarketList").append(getDivNightmarket(offer["displayName"], offer["displayIcon"], offer["cost"], offer["finalCost"], offer["discountPercent"]))
         });
     } else {
         console.log("nightmarket is empty");
