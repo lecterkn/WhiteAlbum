@@ -2,7 +2,7 @@
 
 ## Install
 1. install [Java 17 JDK](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
-2. download WhiteAlbum from [Releases](https://github.com/lecterkn/ValoTools/releases)
+2. download WhiteAlbum from [Releases](https://github.com/lecterkn/WhiteAlbum/releases)
 
 ## Usage
 1. run jar file or batch/shell file
