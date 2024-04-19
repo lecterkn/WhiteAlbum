@@ -43,6 +43,7 @@ public class ValorantAPI {
 		String decoded = new String(Base64.decodeBase64URLSafe(payloads[1] + "==="), StandardCharsets.UTF_8);
 		JsonObject payload = new Gson().fromJson(decoded, JsonObject.class);
 		this.user_id = payload.get("sub").getAsString();
+		System.out.println("user_id: \"" + getUser_id() + "\"");
 		this.gamename = "ValoTools";
 
 		try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
@@ -57,6 +58,7 @@ public class ValorantAPI {
 					this.gamename = data.get("GameName").getAsString() + "#" + data.get("TagLine").getAsString();
 				} else {
 					System.out.println("failed to get player data \"" + httpResponse.getStatusLine().getStatusCode() + "\"");
+					System.out.println(EntityUtils.toString(httpResponse.getEntity(), "UTF-8"));
 				}
 			}
 		} catch (IOException e) {
@@ -76,6 +78,7 @@ public class ValorantAPI {
 				}
 				else {
 					System.out.println("failed to get storefront \"" + httpResponse.getStatusLine().getStatusCode() + "\"");
+					System.out.println(EntityUtils.toString(httpResponse.getEntity(), "UTF-8"));
 				}
 			}
 		} catch (IOException e) {
@@ -89,6 +92,8 @@ public class ValorantAPI {
 		request.addHeader("Accept", "application/json");
 		request.addHeader("Authorization", "Bearer " + this.getAccess_token());
 		request.addHeader("X-Riot-Entitlements-JWT", this.getEntitlements_token());
+		request.addHeader("X-Riot-ClientPlatform", RiotClient.RIOTCLIENT_PLATFORM);
+		request.addHeader("X-Riot-ClientVersion", RiotClient.RIOTCLIENT_VERSION);
 		request.addHeader("Content-Type", "application/json");
 	}
 

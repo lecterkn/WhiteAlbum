@@ -37,9 +37,33 @@ public class RiotClient {
 	private String access_token;
 	private String entitlements_token;
 	private boolean isLogged;
-	public static final String USER_AGENT = "RiotClient/" + getBuildVersion() + " %s (Windows;10;;Professional, x64)";
+	public static String USER_AGENT;
+	public static String RIOTCLIENT_VERSION;
+	public static String RIOTCLIENT_PLATFORM;
 	public static final String ENCODING = "UTF-8";
 	public static final String TOKEN_TYPE = "Bearer";
+	
+	static {
+		try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+			HttpGet httpGet = new HttpGet("https://valorant-api.com/v1/version");
+			httpGet.addHeader("accept", "application/json");
+			try (CloseableHttpResponse httpResponse = httpClient.execute(httpGet)) {
+				if (httpResponse.getStatusLine().getStatusCode() == 200) {
+					JsonObject json = new Gson().fromJson(EntityUtils.toString(httpResponse.getEntity()), JsonObject.class);
+					USER_AGENT = "RiotClient/" + json.getAsJsonObject("data").get("riotClientBuild").getAsString() + " %s (Windows;10;;Professional, x64)";
+					RIOTCLIENT_VERSION = json.getAsJsonObject("data").get("riotClientVersion").getAsString();
+					}
+				else {
+					throw new IOException("Failed to get data");
+				}
+			}
+		} catch (IOException e) {		
+			USER_AGENT = "RiotClient/84.0.1.1350.3124 %s  (Windows;10;;Professional, x64)";
+			RIOTCLIENT_VERSION = "release-08.07-shipping-9-2444158";
+			e.printStackTrace();
+		}
+		RIOTCLIENT_PLATFORM = "ew0KCSJwbGF0Zm9ybVR5cGUiOiAiUEMiLA0KCSJwbGF0Zm9ybU9TIjogIldpbmRvd3MiLA0KCSJwbGF0Zm9ybU9TVmVyc2lvbiI6ICIxMC4wLjE5MDQyLjEuMjU2LjY0Yml0IiwNCgkicGxhdGZvcm1DaGlwc2V0IjogIlVua25vd24iDQp9";
+	}
 
 	private RiotClient(String username, String password) {
 		this.username = username;
@@ -94,6 +118,7 @@ public class RiotClient {
 					Matcher matcher = pattern.matcher(uri);
 					if (matcher.find()) {
 						this.access_token = matcher.group(1);
+						System.out.println("riot account logged in.");
 					}
 					else {
 						System.out.println("access token does not found.");
@@ -113,6 +138,7 @@ public class RiotClient {
 				if (httpResponse.getStatusLine().getStatusCode() == 200) {
 					JsonObject responseJson = new Gson().fromJson(responseBody, JsonObject.class);
 					this.entitlements_token = responseJson.get("entitlements_token").getAsString();
+					System.out.println("success to get entitlements token");
 					return true;
 				}
 				System.out.println("failed to get entitlements_token");
@@ -156,21 +182,5 @@ public class RiotClient {
 
 	public boolean isLogged() {
 		return this.isLogged;
-	}
-
-	public static String getBuildVersion() {
-		try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
-			HttpGet httpGet = new HttpGet("https://valorant-api.com/v1/version");
-			httpGet.addHeader("accept", "application/json");
-			try (CloseableHttpResponse httpResponse = httpClient.execute(httpGet)) {
-				if (httpResponse.getStatusLine().getStatusCode() == 200) {
-					JsonObject json = new Gson().fromJson(EntityUtils.toString(httpResponse.getEntity()), JsonObject.class);
-					return json.getAsJsonObject("data").get("riotClientBuild").getAsString();
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return "82.0.3.1237.2870";
 	}
 }
